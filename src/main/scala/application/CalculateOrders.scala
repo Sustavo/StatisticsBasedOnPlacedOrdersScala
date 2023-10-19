@@ -3,13 +3,16 @@ package application
 import entities.Order
 import validator.Validator
 
-import java.time.{LocalDate, LocalDateTime}
+import java.time.LocalDateTime
 import java.util.Scanner
 import scala.collection.mutable.ListBuffer
 
 object CalculateOrders {
-  def filterOrdersByDate(orders: List[Order], startDate: LocalDateTime, endDate: LocalDateTime): List[Order] = {
-    orders.filter(order => order.getRequestDate.isAfter(startDate) && order.getRequestDate.isBefore(endDate))
+  def filterOrdersByDate(orders: List[(Order, List[LocalDateTime])], startDate: LocalDateTime, endDate: LocalDateTime): List[Order] = {
+    orders.filter { case (order, dateProducts) =>
+      order.getRequestDate.isAfter(startDate) && order.getRequestDate.isBefore(endDate) &&
+        dateProducts.forall(date => date.isAfter(startDate) && date.isBefore(endDate))
+    }.map(_._1)
   }
 
   private def calculateIntervalOrders(orders: List[Order], start: Int, end: Int): Unit = {
@@ -17,7 +20,7 @@ object CalculateOrders {
     val result = orders.to(LazyList).count((order: Order) =>
       order.getRequestDate.isBefore(currentDate.minusMonths(start)) && order.getRequestDate.isAfter(currentDate.minusMonths(end)))
 
-    println(s"${start}-${end} months: ${result}")
+    println(s"$start-$end months: $result")
   }
 
   private def calculateIntervalOrdersByComparative(orders: List[Order], comparator: String, month: Int): Unit = {
@@ -31,7 +34,7 @@ object CalculateOrders {
       case _ => 0
     }
 
-    println(s"${comparator}${month} months: ${result}")
+    println(s"$comparator$month months: $result")
   }
 
   def chooseIntervalOrders(orders: List[Order], scanner: Scanner, startList: ListBuffer[Any], endList: ListBuffer[Any]): Unit = {
@@ -56,7 +59,7 @@ object CalculateOrders {
       List.empty[Int]
     }
 
-    startList += interval(0)
+    startList += interval.head
     endList += interval(1)
     var loop = true
 
@@ -64,12 +67,12 @@ object CalculateOrders {
       println("Do you want to stop? (Yes or No)")
       val stop = scanner.nextLine().toLowerCase()
       stop match {
-        case "yes" => {
+        case "yes" =>
           loop = false
           println("Result: ")
           for (i <- startList.indices) {
             if ((startList(i) == ">" || startList(i) == "<") && startList(i).isInstanceOf[String] && endList(i).isInstanceOf[Int]) {
-              val operator = startList(i).toString()
+              val operator = startList(i).toString
               val month = endList(i).asInstanceOf[Int]
               calculateIntervalOrdersByComparative(orders, operator, month)
             } else {
@@ -78,11 +81,9 @@ object CalculateOrders {
               CalculateOrders.calculateIntervalOrders(orders, start, end)
             }
           }
-        }
-        case "no" => {
+        case "no" =>
           loop = false
           chooseIntervalOrders(orders, scanner, startList, endList)
-        }
         case _ => println("Invalid Argument")
       }
     }
@@ -94,7 +95,7 @@ object CalculateOrders {
     println("Result: ")
     calculateIntervalOrders(orders, 1, 3)
     calculateIntervalOrders(orders, 4, 6)
-    calculateIntervalOrders(orders, 7, 12);
+    calculateIntervalOrders(orders, 7, 12)
     calculateIntervalOrdersByComparative(orders, ">", 12)
   }
 

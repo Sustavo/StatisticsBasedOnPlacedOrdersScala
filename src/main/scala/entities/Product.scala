@@ -25,7 +25,7 @@ class Product(
 
 
   override def toString: String = {
-    s"id: $id Name: ${name}, Category: $category, weight: $weight,  Price: $price, Creation Date: $creationDate \n"
+    s"id: $id Name: $name, Category: $category, weight: $weight,  Price: $price, Creation Date: $creationDate \n"
   }
 
 }

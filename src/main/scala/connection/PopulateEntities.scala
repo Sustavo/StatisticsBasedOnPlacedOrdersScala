@@ -1,39 +1,38 @@
 package connection
-import entities.{Item, Product, Order}
+import entities.Order
+
+import java.sql.Timestamp
+import java.time.LocalDateTime
 
 object PopulateEntities {
-  private val productTable = ConnectJDBC.consultDB("SELECT * FROM product")
-  private val itemTable = ConnectJDBC.consultDB("SELECT * FROM item")
-  private val orderTable = ConnectJDBC.consultDB("SELECT \"order\".order_id, string_agg(order_item.item_id::text, ',') as item_ids, \"order\".client_name, \"order\".contact, \"order\".shipping_address, \"order\".grand_total, \"order\".request_date FROM order_item INNER JOIN \"order\" ON \"order\".order_id = order_item.order_id GROUP BY \"order\".order_id ORDER BY \"order\".order_id;")
-  private val productTableColumns = List(
-    ("product_id", "Long"),
-    ("name", "String"),
-    ("category", "String"),
-    ("weight", "Double"),
-    ("price", "BigDecimal"),
-    ("creationDate", "LocalDateTime"),
-  )
-  private val itemTableColumns = List(
-    ("item_id", "Long"),
-    ("product_id", "Long"),
-    ("shippingfee", "BigDecimal"),
-    ("taxamount", "BigDecimal"),
-    ("item_cost", "BigDecimal")
-  )
+  private val orderTableQuery =
+    """
+      |SELECT "order".order_id, string_agg(order_item.item_id::text, ',') as item_ids,
+      |"order".client_name, "order".contact, "order".shipping_address, "order".grand_total,
+      |"order".request_date
+      |FROM order_item
+      |INNER JOIN "order" ON "order".order_id = order_item.order_id
+      |GROUP BY "order".order_id
+      |ORDER BY "order".order_id;
+    """.stripMargin
+  private def createCreationDateProductsQuery(itemIds: String): String =
+    s"""
+       |SELECT product.creationdate
+       |FROM item
+       |INNER JOIN product ON item.product_id = product.product_id
+       |WHERE item_id IN ($itemIds);
+    """.stripMargin
+  private val orderTableColumns = List("Long", "String", "String", "String", "String", "BigDecimal", "LocalDateTime")
+  private val orderTable = ConnectJDBC.consultDB(orderTableQuery)
+  private val orderPopulate = ConnectJDBC.transformInEntities[Order](orderTable, orderTableColumns)
 
-  private val orderTableColumns = List(
-    ("order_id", "Long"),
-    ("item_ids", "String"),
-    ("client_name", "String"),
-    ("contact", "String"),
-    ("shipping_address", "String"),
-    ("grand_total", "BigDecimal"),
-    ("request_date", "LocalDateTime")
-  )
+  private val datesProducts = orderPopulate.map { order =>
+    val itemIds = order.getItem
+    val dateProductsQuery = createCreationDateProductsQuery(itemIds)
+    val dateList = ConnectJDBC.consultDB(dateProductsQuery)
+    dateList.flatten.map(date => Timestamp.valueOf(date).toLocalDateTime)
+  }
 
-  val productPopulate = ConnectJDBC.transformToList[Product](productTable, productTableColumns)
-  val itemsPopulate = ConnectJDBC.transformToList[Item](itemTable, itemTableColumns)
-  val orderPopulate = ConnectJDBC.transformToList[Order](orderTable, orderTableColumns)
-
+  lazy val orderAndProducts: List[(Order, List[LocalDateTime])] = orderPopulate.zip(datesProducts)
 
 }

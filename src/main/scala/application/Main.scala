@@ -1,11 +1,10 @@
 package application
 
-import connection.{ConnectJDBC, PopulateEntities}
-import entities.Item
+import connection.PopulateEntities
 import validator.Validator
 
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.time.{LocalDate, LocalDateTime}
 import java.util.Scanner
 import scala.collection.mutable.ListBuffer
 
@@ -15,17 +14,10 @@ object Main {
     val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
     if (Validator.validateParameters(args) && Validator.validateDates(args, formatter)) return
 
-    val startDate = LocalDateTime.parse(args(0), formatter)
-    val endDate = LocalDateTime.parse(args(1), formatter)
+    val startDate = LocalDateTime.of(2020, 10, 21, 14, 30, 0)
+    val endDate = LocalDateTime.of(2023, 9, 21, 14, 30, 0)
 
-//    val startDate = LocalDateTime.of(2020, 10, 21, 14, 30, 0)
-//    val endDate = LocalDateTime.of(2023, 9, 21, 14, 30, 0)
-//    println(startDate)
-//    println(endDate)
-    //2020-10-21 21:14:30
-    //2023-9-21 21:14:30
-
-    val orders = PopulateEntities.orderPopulate
+    val orders = PopulateEntities.orderAndProducts
     println("----------------------------------------")
     println(s"Total orders: ${orders.size}")
     println("----------------------------------------")
@@ -53,5 +45,5 @@ object Main {
 
       }
     }
-    }
+  }
 }
