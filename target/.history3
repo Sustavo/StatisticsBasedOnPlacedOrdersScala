@@ -1,0 +1,17 @@
+1696897771406:;set _root_.scala.collection.Seq(historyPath := None,shellPrompt := { _ => "" },SettingKey[_root_.scala.Option[_root_.sbt.File]]("sbtStructureOutputFile") in _root_.sbt.Global := _root_.scala.Some(_root_.sbt.file("/tmp/sbt-structure.xml")),SettingKey[_root_.java.lang.String]("sbtStructureOptions") in _root_.sbt.Global := "download, resolveClassifiers");apply -cp "/home/gustavo/.local/share/JetBrains/IntelliJIdea2023.2/Scala/repo/org/jetbrains/scala/sbt-structure-extractor_2.12_1.0/2023.1.0/sbt-structure-extractor-2023.1.0.jar" org.jetbrains.sbt.CreateTasks;preferScala2;*/*:dumpStructure
+1697506529982:run
+1697506544295:run "2020-10-21 21:14:30" "2023-9-21 21:14:30"
+1697506590554:run "2020-10-21 21:14:30" "2023-09-21 21:14:30"
+1697506619274:compile
+1697506624559:run "2020-10-21 21:14:30" "2023-09-21 21:14:30"
+1697506732114:compile
+1697506734465:run "2020-10-21 21:14:30" "2023-09-21 21:14:30"
+1697506745666:compile
+1697506757817:run "2020-10-21 21:14:30" "2023-09-21 21:14:30"
+1697506806601:compile
+1697506816327:run "2020-10-21T21:14:30" "2023-09-21T21:14:30"
+1697506834172:run "2020-10-21T14:30" "2023-09-21T14:30"
+1697506914068:compile
+1697506948010:run "2020-10-21T14:30" "2023-09-21T14:30"
+1697506985835:compile
+1697506987704:run "2020-10-21T14:30" "2023-09-21T14:30"

@@ -1,0 +1,57 @@
+package application
+
+import connection.{ConnectJDBC, PopulateEntities}
+import entities.Item
+import validator.Validator
+
+import java.time.format.DateTimeFormatter
+import java.time.{LocalDate, LocalDateTime}
+import java.util.Scanner
+import scala.collection.mutable.ListBuffer
+
+object Main {
+  def main(args: Array[String]): Unit = {
+    val scanner = new Scanner(System.in)
+    val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+    if (Validator.validateParameters(args) && Validator.validateDates(args, formatter)) return
+
+    val startDate = LocalDateTime.parse(args(0), formatter)
+    val endDate = LocalDateTime.parse(args(1), formatter)
+
+//    val startDate = LocalDateTime.of(2020, 10, 21, 14, 30, 0)
+//    val endDate = LocalDateTime.of(2023, 9, 21, 14, 30, 0)
+//    println(startDate)
+//    println(endDate)
+    //2020-10-21 21:14:30
+    //2023-9-21 21:14:30
+
+    val orders = PopulateEntities.orderPopulate
+    println("----------------------------------------")
+    println(s"Total orders: ${orders.size}")
+    println("----------------------------------------")
+
+    lazy val filteredOrders = CalculateOrders.filterOrdersByDate(orders, startDate, endDate)
+    println("Total filtered orders: " + filteredOrders.size)
+    println("Orders filtered based on: " + startDate + " and " + endDate)
+    println("----------------------------------------")
+
+    val startList = new ListBuffer[Any]()
+    val endList = new ListBuffer[Any]()
+    var loop = true
+
+    while (loop) {
+      println("Would you like to choose the range? (Yes or No)")
+      val choose = scanner.nextLine().toLowerCase()
+      choose match {
+        case "yes" =>
+          loop = false
+          CalculateOrders.chooseIntervalOrders(filteredOrders, scanner, startList, endList)
+        case "no" =>
+          loop = false
+          CalculateOrders.defaultIntervalOrders(filteredOrders)
+        case _ => println("Incorrect argument")
+
+      }
+    }
+    }
+}
