@@ -1,18 +1,15 @@
 package validator
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 import java.time.format.{DateTimeFormatter, DateTimeParseException}
 
 object Validator {
-  def validateParameters(args: Array[String]): Boolean = {
-    if (args.length != 2) {
-      throw new IllegalArgumentException("you need to enter two dates:\n" +
-        "Start Date and End Date")
-    }
+  def validateArgs(args: Array[String]): Boolean = {
+    if (args.length != 2)  throw new IllegalArgumentException("you need to enter two dates:\n" + "Start Date and End Date")
     false
   }
 
-  def validateDates(args: Array[String], formatter: DateTimeFormatter): Boolean = {
+  def validateDateFormat(args: Array[String], formatter: DateTimeFormatter): Boolean = {
     try {
       val start = LocalDate.parse(args(0), formatter)
       val end = LocalDate.parse(args(1), formatter)
@@ -28,12 +25,11 @@ object Validator {
         true
   }
 
-  def EndIsBiggerThanStart(start: Int, end: Int): Boolean = {
-    if (end > start) {
-      true
-    } else {
-      throw new IllegalArgumentException("The value of 'end' must be greater than 'start'.")
-    }
+  def validateDateRange(startDate: LocalDateTime, endDate: LocalDateTime): Boolean =
+    if(startDate.isBefore(endDate)) true else throw new IllegalArgumentException("The start date cannot be later than the end date")
+
+  def validateIntervalParameters(start: Int, end: Int): Boolean = {
+    if (end > start) true else throw new IllegalArgumentException("The value of 'end' must be greater than 'start'.")
   }
 
 }

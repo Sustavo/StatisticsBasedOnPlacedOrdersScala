@@ -1,4 +1,4 @@
-package entities
+package entity
 
 class Item(
             private val id: Long,

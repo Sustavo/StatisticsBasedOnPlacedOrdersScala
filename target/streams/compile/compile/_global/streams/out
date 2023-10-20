@@ -1,13 +1,9 @@
-[0m[[0m[31merror[0m] [0m[0m[31m[31m-- [E006] Not Found Error: /home/gustavo/Estudos/soluevo/placedOrders2/src/main/scala/application/Main.scala:46:19 [0m[0m[0m
-[0m[[0m[31merror[0m] [0m[0m[31m46 |[0m      [33mval[0m [36mchoose[0m = scanner.nextLine().toLowerCase()[0m
-[0m[[0m[31merror[0m] [0m[0m[31m[31m   |[0m                   ^^^^^^^[0m[0m
-[0m[[0m[31merror[0m] [0m[0m[31m   |[0m                   Not found: scanner[0m
-[0m[[0m[31merror[0m] [0m[0m[31m   |[0m[0m
-[0m[[0m[31merror[0m] [0m[0m[31m   |[0m longer explanation available when compiling with `-explain`[0m
-[0m[[0m[31merror[0m] [0m[0m[31m[31m-- [E006] Not Found Error: /home/gustavo/Estudos/soluevo/placedOrders2/src/main/scala/application/Main.scala:50:63 [0m[0m[0m
-[0m[[0m[31merror[0m] [0m[0m[31m50 |[0m          CalculateOrders.chooseIntervalOrders(filteredOrders, scanner, startList, endList)[0m
-[0m[[0m[31merror[0m] [0m[0m[31m[31m   |[0m                                                               ^^^^^^^[0m[0m
-[0m[[0m[31merror[0m] [0m[0m[31m   |[0m                                                      Not found: scanner[0m
-[0m[[0m[31merror[0m] [0m[0m[31m   |[0m[0m
-[0m[[0m[31merror[0m] [0m[0m[31m   |[0m longer explanation available when compiling with `-explain`[0m
+[0m[[0m[31merror[0m] [0m[0m[31m[31m-- Error: /home/gustavo/Estudos/soluevo/placedOrders2/src/main/scala/application/CalculateOrders.scala:87:23 [0m[0m[0m
+[0m[[0m[31merror[0m] [0m[0m[31m87 |[0m        [33mcase[0m Some(Left(ComparativeInterval([31m">"[0m, month))) => calculateIntervalOrdersByComparative(orders, [31m">"[0m, month)[0m
+[0m[[0m[31merror[0m] [0m[0m[31m[31m   |[0m                       ^[0m[0m
+[0m[[0m[31merror[0m] [0m[0m[31m   |[0mthis case is unreachable since type application.CalculateOrders.RegularInterval and [33mclass[0m [35mComparativeInterval[0m are unrelated[0m
+[0m[[0m[31merror[0m] [0m[0m[31m[31m-- Error: /home/gustavo/Estudos/soluevo/placedOrders2/src/main/scala/application/CalculateOrders.scala:89:24 [0m[0m[0m
+[0m[[0m[31merror[0m] [0m[0m[31m89 |[0m        [33mcase[0m Some(Right(RegularInterval(start, end))) => CalculateOrders.calculateIntervalOrders(orders, start, end)[0m
+[0m[[0m[31merror[0m] [0m[0m[31m[31m   |[0m                        ^[0m[0m
+[0m[[0m[31merror[0m] [0m[0m[31m   |[0mthis case is unreachable since type application.CalculateOrders.ComparativeInterval and [33mclass[0m [35mRegularInterval[0m are unrelated[0m
 [0m[[0m[31merror[0m] [0m[0mtwo errors found[0m

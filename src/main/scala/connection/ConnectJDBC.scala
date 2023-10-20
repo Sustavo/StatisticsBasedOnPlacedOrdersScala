@@ -1,6 +1,9 @@
 package connection
 
+import entity.{Item, Order}
+
 import java.sql.*
+import java.time.{LocalDateTime, ZoneId}
 
 object ConnectJDBC {
   private val url = "jdbc:postgresql://localhost:5432/Orders"
@@ -65,31 +68,5 @@ object ConnectJDBC {
     }
     resultList
   }
-
-
-//  def transformToList[T](resultSet: ResultSet, columns: List[(String, String)])(implicit tag: reflect.ClassTag[T]): List[T] = {
-//    var resultList = List.empty[T]
-//    while (resultSet.next()) {
-//      val values = columns.map {
-//        case (columnName, fieldType) =>
-//          fieldType match {
-//            case "String" => resultSet.getString(columnName)
-//            case "Int" => resultSet.getInt(columnName)
-//            case "Double" => resultSet.getDouble(columnName)
-//            case "Long" => resultSet.getLong(columnName)
-//            case "BigDecimal" => scala.math.BigDecimal(resultSet.getBigDecimal(columnName))
-//            case "LocalDateTime" => {
-//              val timestamp = resultSet.getTimestamp(columnName)
-//              timestamp.toLocalDateTime.asInstanceOf[Any]
-//            }
-//            case _ => throw new IllegalArgumentException(s"Unsupported field type: $fieldType")
-//          }
-//      }
-//      val constructor = tag.runtimeClass.getConstructors.head
-//      val item = constructor.newInstance(values: _*).asInstanceOf[T]
-//      resultList = resultList :+ item
-//    }
-//    resultList
-//  }
 
 }

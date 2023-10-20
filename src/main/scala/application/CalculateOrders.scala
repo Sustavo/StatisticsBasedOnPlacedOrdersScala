@@ -1,6 +1,6 @@
 package application
 
-import entities.Order
+import entity.Order
 import validator.Validator
 
 import java.time.LocalDateTime
@@ -8,6 +8,9 @@ import java.util.Scanner
 import scala.collection.mutable.ListBuffer
 
 object CalculateOrders {
+  case class RegularInterval(start: Int, end: Int)
+  case class ComparativeInterval(operator: String, value: Int)
+
   def filterOrdersByDate(orders: List[(Order, List[LocalDateTime])], startDate: LocalDateTime, endDate: LocalDateTime): List[Order] = {
     orders.filter { case (order, dateProducts) =>
       order.getRequestDate.isAfter(startDate) && order.getRequestDate.isBefore(endDate) &&
@@ -37,59 +40,60 @@ object CalculateOrders {
     println(s"$comparator$month months: $result")
   }
 
-  def chooseIntervalOrders(orders: List[Order], scanner: Scanner, startList: ListBuffer[Any], endList: ListBuffer[Any]): Unit = {
+  def chooseIntervalOrders(orders: List[Order], scanner: Scanner, indexesList: ListBuffer[Option[Either[RegularInterval, ComparativeInterval]]]): Unit = {
     println("Choose your interval (ex: 1-6 or >15): ")
     val input = scanner.nextLine()
+    val interval = parseInterval(input)
+    if(interval.nonEmpty) indexesList += interval
 
-    val interval = if (input.contains("-")) {
-      val parts = input.split("-")
-      if (parts.length == 2) {
-        val start = Integer.parseInt(parts(0).trim())
-        val end = Integer.parseInt(parts(1).trim())
-        Validator.EndIsBiggerThanStart(start, end)
-        List(start, end)
-      } else {
-        List.empty[Int]
-      }
-    } else if (input.startsWith(">") || input.startsWith("<")) {
-      val operator = input.substring(0, 1)
-      val value = Integer.parseInt(input.substring(1).trim())
-      List(operator, value)
-    } else {
-      List.empty[Int]
-    }
-
-    startList += interval.head
-    endList += interval(1)
     var loop = true
 
-    while (loop) {
-      println("Do you want to stop? (Yes or No)")
+    while(loop) {
+      println("Do you want to continue? (Yes or No)")
       val stop = scanner.nextLine().toLowerCase()
       stop match {
         case "yes" =>
           loop = false
-          println("Result: ")
-          for (i <- startList.indices) {
-            if ((startList(i) == ">" || startList(i) == "<") && startList(i).isInstanceOf[String] && endList(i).isInstanceOf[Int]) {
-              val operator = startList(i).toString
-              val month = endList(i).asInstanceOf[Int]
-              calculateIntervalOrdersByComparative(orders, operator, month)
-            } else {
-              val start = startList(i).asInstanceOf[Int]
-              val end = endList(i).asInstanceOf[Int]
-              CalculateOrders.calculateIntervalOrders(orders, start, end)
-            }
-          }
+          chooseIntervalOrders(orders, scanner, indexesList)
+
         case "no" =>
           loop = false
-          chooseIntervalOrders(orders, scanner, startList, endList)
+          processIntervals(orders, indexesList)
+
         case _ => println("Invalid Argument")
       }
     }
-
   }
 
+  private def parseInterval(input: String): Option[Either[RegularInterval, ComparativeInterval]] = {
+      if (input.contains("-")) {
+        val parts = input.split("-")
+        if (parts.length == 2) {
+          val start = parts(0).trim().toInt
+          val end = parts(1).trim().toInt
+          Validator.validateIntervalParameters(start, end)
+          Some(Left(RegularInterval(start, end)))
+        } else None
+      } else if (input.startsWith(">") || input.startsWith("<")) {
+        val operator = input.substring(0, 1)
+        val value = input.substring(1).trim().toInt
+        Some(Right(ComparativeInterval(operator, value)))
+      } else None
+  }
+
+  private def processIntervals(orders: List[Order], indexesList: ListBuffer[Option[Either[RegularInterval, ComparativeInterval]]]): Unit = {
+    def auxProcessIndexes(index: Option[Either[RegularInterval, ComparativeInterval]]): Unit = {
+      index match
+        case Some(Right(ComparativeInterval(">", month))) => calculateIntervalOrdersByComparative(orders, ">", month)
+        case Some(Right(ComparativeInterval("<", month))) => calculateIntervalOrdersByComparative(orders, "<", month)
+        case Some(Left(RegularInterval(start, end))) => CalculateOrders.calculateIntervalOrders(orders, start, end)
+        case _ => println("Invalid Argument")
+    }
+
+    println("Result: ")
+    indexesList.foreach(index => auxProcessIndexes(index))
+
+  }
 
   def defaultIntervalOrders(orders: List[Order]): Unit = {
     println("Result: ")

@@ -1,5 +1,5 @@
 package connection
-import entities.Order
+import entity.Order
 
 import java.sql.Timestamp
 import java.time.LocalDateTime

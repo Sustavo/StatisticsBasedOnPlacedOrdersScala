@@ -1,5 +1,7 @@
 package application
 
+import application.CalculateOrders
+import application.CalculateOrders.{ComparativeInterval, RegularInterval}
 import connection.PopulateEntities
 import validator.Validator
 
@@ -12,7 +14,7 @@ object Main {
   def main(args: Array[String]): Unit = {
     val scanner = new Scanner(System.in)
     val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
-    if (Validator.validateParameters(args) && Validator.validateDates(args, formatter)) return
+    if (Validator.validateArgs(args) && Validator.validateDateFormat(args, formatter)) return
 
     val startDate = LocalDateTime.of(2020, 10, 21, 14, 30, 0)
     val endDate = LocalDateTime.of(2023, 9, 21, 14, 30, 0)
@@ -27,8 +29,7 @@ object Main {
     println("Orders filtered based on: " + startDate + " and " + endDate)
     println("----------------------------------------")
 
-    val startList = new ListBuffer[Any]()
-    val endList = new ListBuffer[Any]()
+    val indexesList = new ListBuffer[Option[Either[RegularInterval, ComparativeInterval]]]()
     var loop = true
 
     while (loop) {
@@ -37,7 +38,7 @@ object Main {
       choose match {
         case "yes" =>
           loop = false
-          CalculateOrders.chooseIntervalOrders(filteredOrders, scanner, startList, endList)
+          CalculateOrders.chooseIntervalOrders(filteredOrders, scanner, indexesList)
         case "no" =>
           loop = false
           CalculateOrders.defaultIntervalOrders(filteredOrders)
