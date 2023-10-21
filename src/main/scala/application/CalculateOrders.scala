@@ -11,11 +11,11 @@ object CalculateOrders {
   case class RegularInterval(start: Int, end: Int)
   case class ComparativeInterval(operator: String, value: Int)
 
-  def filterOrdersByDate(orders: List[(Order, List[LocalDateTime])], startDate: LocalDateTime, endDate: LocalDateTime): List[Order] = {
-    orders.filter { case (order, dateProducts) =>
+  def filterOrdersByDate(orders: List[Order], startDate: LocalDateTime, endDate: LocalDateTime): List[Order] = {
+    orders.filter{order => 
       order.getRequestDate.isAfter(startDate) && order.getRequestDate.isBefore(endDate) &&
-        dateProducts.forall(date => date.isAfter(startDate) && date.isBefore(endDate))
-    }.map(_._1)
+      order.getItem.forall(item => item.getProduct.getCreationDate.isAfter(startDate) && item.getProduct.getCreationDate.isBefore(endDate))
+    }
   }
 
   private def calculateIntervalOrders(orders: List[Order], start: Int, end: Int): Unit = {

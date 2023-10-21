@@ -2,7 +2,7 @@ package entity
 
 class Item(
             private val id: Long,
-            private val product: Long,
+            private val product: Product,
             private val shippingFee: BigDecimal,
             private val taxAmount: BigDecimal,
             private val cost: BigDecimal
@@ -10,7 +10,7 @@ class Item(
 
   def getId: Long = id
 
-  def getProduct: Long = product
+  def getProduct: Product = product
 
   def getShippingFee: BigDecimal = shippingFee
 

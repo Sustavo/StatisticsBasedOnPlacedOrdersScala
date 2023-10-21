@@ -2,8 +2,9 @@ package application
 
 import application.CalculateOrders
 import application.CalculateOrders.{ComparativeInterval, RegularInterval}
-import connection.PopulateEntities
+import connection.ConnectJDBC
 import validator.Validator
+import entity.Order
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -19,7 +20,9 @@ object Main {
     val startDate = LocalDateTime.of(2020, 10, 21, 14, 30, 0)
     val endDate = LocalDateTime.of(2023, 9, 21, 14, 30, 0)
 
-    val orders = PopulateEntities.orderAndProducts
+    Validator.validateDateRange(startDate, endDate)
+
+    val orders: List[Order] = ConnectJDBC.getOrders
     println("----------------------------------------")
     println(s"Total orders: ${orders.size}")
     println("----------------------------------------")

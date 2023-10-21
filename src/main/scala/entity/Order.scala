@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 
 class Order (
               private var id: Long,
-              private var item: String,
+              private var item: List[Item],
               private var clientName: String,
               private var contact: String,
               private var shippingAddress: String,
@@ -13,9 +13,7 @@ class Order (
             ) {
   def getId: Long = id
 
-  def getItem: String = item
-
-  def setItem(newItem: String): Unit = item = newItem
+  def getItem: List[Item] = item
 
   def getClientName: String = clientName
 
