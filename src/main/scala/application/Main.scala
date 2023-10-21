@@ -17,8 +17,11 @@ object Main {
     val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
     if (Validator.validateArgs(args) && Validator.validateDateFormat(args, formatter)) return
 
-    val startDate = LocalDateTime.of(2020, 10, 21, 14, 30, 0)
-    val endDate = LocalDateTime.of(2023, 9, 21, 14, 30, 0)
+//    val startDate = LocalDateTime.of(2020, 10, 21, 14, 30, 0)
+//    val endDate = LocalDateTime.of(2023, 9, 21, 14, 30, 0)
+
+    val startDate = LocalDateTime.parse(args(0), formatter)
+    val endDate = LocalDateTime.parse(args(1), formatter)
 
     Validator.validateDateRange(startDate, endDate)
 

@@ -1,8 +1,7 @@
-[0m[[0m[31merror[0m] [0m[0mjava.time.format.DateTimeParseException: Text '2020-10-21T14:30 00:00:00' could not be parsed, unparsed text found at index 16[0m
-[0m[[0m[31merror[0m] [0m[0m	at java.base/java.time.format.DateTimeFormatter.parseResolved0(DateTimeFormatter.java:2049)[0m
-[0m[[0m[31merror[0m] [0m[0m	at java.base/java.time.format.DateTimeFormatter.parse(DateTimeFormatter.java:1948)[0m
-[0m[[0m[31merror[0m] [0m[0m	at java.base/java.time.LocalDateTime.parse(LocalDateTime.java:492)[0m
-[0m[[0m[31merror[0m] [0m[0m	at application.Main$.main(Main.scala:18)[0m
+[0m[[0m[31merror[0m] [0m[0mjava.lang.RuntimeException: Error executing the query.[0m
+[0m[[0m[31merror[0m] [0m[0m	at connection.ConnectJDBC$.executeQuery(ConnectJDBC.scala:23)[0m
+[0m[[0m[31merror[0m] [0m[0m	at connection.ConnectJDBC$.getOrders(ConnectJDBC.scala:48)[0m
+[0m[[0m[31merror[0m] [0m[0m	at application.Main$.main(Main.scala:25)[0m
 [0m[[0m[31merror[0m] [0m[0m	at application.Main.main(Main.scala)[0m
 [0m[[0m[31merror[0m] [0m[0m	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)[0m
 [0m[[0m[31merror[0m] [0m[0m	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)[0m
@@ -21,4 +20,4 @@
 [0m[[0m[31merror[0m] [0m[0m	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)[0m
 [0m[[0m[31merror[0m] [0m[0m	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)[0m
 [0m[[0m[31merror[0m] [0m[0m	at java.base/java.lang.Thread.run(Thread.java:829)[0m
-[0m[[0m[31merror[0m] [0m[0m(Compile / [31mrun[0m) java.time.format.DateTimeParseException: Text '2020-10-21T14:30 00:00:00' could not be parsed, unparsed text found at index 16[0m
+[0m[[0m[31merror[0m] [0m[0m(Compile / [31mrun[0m) Error executing the query.[0m
