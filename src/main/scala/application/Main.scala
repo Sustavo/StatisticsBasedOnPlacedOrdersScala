@@ -4,7 +4,7 @@ import application.CalculateOrders
 import application.CalculateOrders.{ComparativeInterval, RegularInterval}
 import connection.ConnectJDBC
 import validator.Validator
-import entity.Order
+import entity.{Item, Order}
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -25,7 +25,7 @@ object Main {
 
     Validator.validateDateRange(startDate, endDate)
 
-    val orders: List[Order] = ConnectJDBC.getOrders
+    lazy val orders: List[Order] = ConnectJDBC.getOrders
     println("----------------------------------------")
     println(s"Total orders: ${orders.size}")
     println("----------------------------------------")

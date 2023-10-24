@@ -5,6 +5,8 @@ import entity.{Item, Order, Product}
 import java.sql.*
 
 object ConnectJDBC {
+  case class OrderItem(id: Long, order_id: Long, item_id: Long)
+
   private val url = "jdbc:postgresql://localhost:5432/Orders"
   private val user = "postgres"
   private val password = "postgres"
@@ -37,11 +39,58 @@ object ConnectJDBC {
     }
   }
 
+  def getOrderItems: List[OrderItem] = {
+    val queryValue = "SELECT * FROM order_item"
+    val listOrderItems = consultDB(queryValue).map { listValues => {
+      val id = listValues.head.toLong
+      val orderId = listValues(1).toLong
+      val itemId = listValues(2).toLong
+      OrderItem(id, orderId, itemId)
+    }}
+
+    listOrderItems
+  }
+
+  def getProducts: List[Product] = {
+    val queryValue = "SELECT * FROM product"
+    val listProducts = consultDB(queryValue).map { listValues => {
+      val id = listValues.head.toLong
+      val name = listValues(1)
+      val category = listValues(2)
+      val weight = listValues(3).toDouble
+      val price = BigDecimal(listValues(4))
+      val creationDate = Timestamp.valueOf(listValues(5)).toLocalDateTime
+      Product(id, name, category, weight, price, creationDate)
+    }}
+
+    listProducts
+
+  }
+
+  def getItems: List[Item] = {
+    val queryValue = "SELECT * FROM item"
+    val products = getProducts
+    val listItems = consultDB(queryValue).map { listValues => {
+      val id = listValues.head.toLong
+      val product = products.filter(product => product.getId == id).head
+      val shippingFee = BigDecimal(listValues(2))
+      val taxAmount = BigDecimal(listValues(3))
+      val cost = BigDecimal(listValues(4))
+      Item(id, product, shippingFee, taxAmount, cost)
+    }}
+
+    listItems
+  }
+
   def getOrders: List[Order] = {
     val queryValue = "SELECT * FROM \"order\""
-    val ListOrders = consultDB(queryValue).map { listValues => {
+    val itemsList = ConnectJDBC.getItems
+    val listOrders = consultDB(queryValue).map { listValues => {
       val id = listValues.head.toLong
-      val items = getItemsForOrder(id)
+      val items = getOrderItems.filter(orderItem => orderItem.order_id == id).flatMap { orderItem => {
+        val correspondingItem = itemsList.find(item => item.getId == orderItem.item_id)
+        correspondingItem
+      }}
       val name = listValues(1)
       val contact = listValues(2)
       val shippingAddress = listValues(3)
@@ -50,49 +99,7 @@ object ConnectJDBC {
       Order(id, items, name, contact, shippingAddress, grandTotal, requestDate)
     }}
 
-    ListOrders
-  }
-
-   private def getItemsForOrder(orderId: Long): List[Item] = {
-     val queryValue =
-     s"""
-       |SELECT item.item_id, product_id, shippingfee, taxamount, item_cost
-       |FROM order_item
-       |INNER JOIN item on order_item.item_id = item.item_id WHERE order_id = $orderId;
-     """.stripMargin
-
-    val listItems: List[Item] = consultDB(queryValue).map { listValues =>
-      val id = listValues.head.toLong
-      val product = getProductForItem(listValues(1).toLong)
-      val shippingFee = BigDecimal(listValues(2))
-      val taxAmount = BigDecimal(listValues(3))
-      val cost = BigDecimal(listValues(4))
-      Item(id, product, shippingFee, taxAmount, cost)
-    }
-
-     listItems
-  }
-
-  private def getProductForItem(itemId: Long): Product = {
-    val queryValue =
-      s"""
-       |SELECT product.product_id, product.name, product.category, product.weight, product.price, product.creationdate
-       |FROM item
-       |INNER JOIN product ON item.product_id = product.product_id
-       |WHERE item.product_id = $itemId;
-      """.stripMargin
-
-    val product = consultDB(queryValue).map { listValues =>
-      val id = listValues.head.toLong
-      val name = listValues(1)
-      val category = listValues(2)
-      val weight = listValues(3).toDouble
-      val price = BigDecimal(listValues(4))
-      val creationDate = Timestamp.valueOf(listValues(5)).toLocalDateTime
-      Product(id, name, category, weight, price, creationDate)
-    }
-
-    product.head
+    listOrders
   }
 
 }
