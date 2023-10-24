@@ -5,8 +5,10 @@ import java.time.format.{DateTimeFormatter, DateTimeParseException}
 
 object Validator {
   def validateArgs(args: Array[String]): Boolean = {
-    if (args.length != 2)  throw new IllegalArgumentException("you need to enter two dates:\n" + "Start Date and End Date")
-    false
+    if (args.length != 2)  {
+      throw new IllegalArgumentException("you need to enter two dates:\n" + "Start Date and End Date")
+      false
+    } else true
   }
 
   def validateDateFormat(args: Array[String], formatter: DateTimeFormatter): Boolean = {
@@ -26,7 +28,10 @@ object Validator {
   }
 
   def validateDateRange(startDate: LocalDateTime, endDate: LocalDateTime): Boolean =
-    if(startDate.isBefore(endDate)) true else throw new IllegalArgumentException("The start date cannot be later than the end date")
+    if(startDate.isBefore(endDate)) true else {
+      throw new IllegalArgumentException("The start date cannot be later than the end date")
+      false
+    }
 
   def validateIntervalParameters(start: Int, end: Int): Boolean = {
     if (end > start) true else throw new IllegalArgumentException("The value of 'end' must be greater than 'start'.")

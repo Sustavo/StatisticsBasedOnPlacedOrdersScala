@@ -1,10 +1,9 @@
 package application
 
-import application.CalculateOrders
-import application.CalculateOrders.{ComparativeInterval, RegularInterval}
+import application.CalculateOrders._
 import connection.ConnectJDBC
 import validator.Validator
-import entity.{Item, Order}
+import entity.{Order}
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
