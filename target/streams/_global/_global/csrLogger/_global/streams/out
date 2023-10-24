@@ -1,4 +1,4 @@
-[debug] downloaded https://repo1.maven.org/maven2/org/checkerframework/checker-qual/3.31.0/checker-qual-3.31.0-sources.jar
-[debug] downloaded https://repo1.maven.org/maven2/org/postgresql/postgresql/42.6.0/postgresql-42.6.0-sources.jar
-[debug] downloaded https://repo1.maven.org/maven2/org/checkerframework/checker-qual/3.31.0/checker-qual-3.31.0-javadoc.jar
-[debug] downloaded https://repo1.maven.org/maven2/org/postgresql/postgresql/42.6.0/postgresql-42.6.0-javadoc.jar
+[debug] downloaded https://repo1.maven.org/maven2/com/typesafe/slick/slick-hikaricp_3/3.5.0-M4/slick-hikaricp_3-3.5.0-M4-sources.jar
+[debug] downloaded https://repo1.maven.org/maven2/com/zaxxer/HikariCP/4.0.3/HikariCP-4.0.3-sources.jar
+[debug] downloaded https://repo1.maven.org/maven2/com/zaxxer/HikariCP/4.0.3/HikariCP-4.0.3-javadoc.jar
+[debug] downloaded https://repo1.maven.org/maven2/com/typesafe/slick/slick-hikaricp_3/3.5.0-M4/slick-hikaricp_3-3.5.0-M4-javadoc.jar
