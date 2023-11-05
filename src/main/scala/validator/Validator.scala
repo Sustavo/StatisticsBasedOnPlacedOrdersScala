@@ -19,10 +19,11 @@ object Validator {
       }
 
       false
-    } catch
+    } catch {
       case _: DateTimeParseException =>
         println("An error occurred when trying to use the arguments passed.\nit is necessary to use the format: \"YYYY-MM-DD HH:mm:ss\"")
         true
+    }
   }
 
   def validateDateRange(startDate: LocalDateTime, endDate: LocalDateTime): Boolean =

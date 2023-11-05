@@ -2,14 +2,14 @@ package entity
 
 import java.time.LocalDateTime
 
-class Order (
-              private var id: Long,
-              private var item: List[Item],
-              private var clientName: String,
-              private var contact: String,
-              private var shippingAddress: String,
-              private var grandTotal: BigDecimal,
-              private var requestDate: LocalDateTime,
+case class Order (
+              var id: Long,
+              var item: List[Item],
+              var clientName: String,
+              var contact: String,
+              var shippingAddress: String,
+              var grandTotal: BigDecimal,
+              var requestDate: LocalDateTime,
             ) {
   def getId: Long = id
 

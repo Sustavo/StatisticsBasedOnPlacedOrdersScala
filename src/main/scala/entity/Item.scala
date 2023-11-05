@@ -1,6 +1,6 @@
 package entity
 
-class Item(
+case class Item(
             private val id: Long,
             private val product: Product,
             private val shippingFee: BigDecimal,

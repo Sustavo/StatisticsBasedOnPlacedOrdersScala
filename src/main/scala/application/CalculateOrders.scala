@@ -12,7 +12,7 @@ object CalculateOrders {
   case class ComparativeInterval(operator: String, value: Int)
 
   def filterOrdersByDate(orders: List[Order], startDate: LocalDateTime, endDate: LocalDateTime): List[Order] = {
-    orders.filter{order => 
+    orders.filter{order =>
       order.getRequestDate.isAfter(startDate) && order.getRequestDate.isBefore(endDate) &&
       order.getItem.forall(item => item.getProduct.getCreationDate.isAfter(startDate) && item.getProduct.getCreationDate.isBefore(endDate))
     }
@@ -83,11 +83,12 @@ object CalculateOrders {
 
   private def processIntervals(orders: List[Order], indexesList: ListBuffer[Option[Either[RegularInterval, ComparativeInterval]]]): Unit = {
     def auxProcessIndexes(index: Option[Either[RegularInterval, ComparativeInterval]]): Unit = {
-      index match
-        case Some(Right(ComparativeInterval(">", month))) => calculateIntervalOrdersByComparative(orders, ">", month)
+      index match {
+        case Some(Right(ComparativeInterval(">", month: Int))) => calculateIntervalOrdersByComparative(orders, ">", month)
         case Some(Right(ComparativeInterval("<", month))) => calculateIntervalOrdersByComparative(orders, "<", month)
         case Some(Left(RegularInterval(start, end))) => CalculateOrders.calculateIntervalOrders(orders, start, end)
         case _ => println("Invalid Argument")
+      }
     }
 
     println("Result: ")

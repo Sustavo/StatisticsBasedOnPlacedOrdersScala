@@ -2,7 +2,7 @@ package entity
 
 import java.time.LocalDateTime
 
-class Product(
+case class Product(
                 var id: Long,
                 var name: String,
                 var category: String,
@@ -21,7 +21,7 @@ class Product(
   def getPrice: BigDecimal = price
 
   def getCreationDate: LocalDateTime = creationDate
-  
+
 
 
   override def toString: String = {

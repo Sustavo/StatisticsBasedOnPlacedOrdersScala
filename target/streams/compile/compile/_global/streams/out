@@ -1,5 +1,4 @@
-[0m[[0m[33mwarn[0m] [0m[0m[33m[33m-- Warning: /home/gustavo/Estudos/soluevo/placedOrders2/src/main/scala/connection/ConnectJDBC.scala:64:4 [0m[0m[0m
-[0m[[0m[33mwarn[0m] [0m[0m[33m64 |[0m    [33mval[0m [36mlistItems[0m: [35mList[0m[[35mItem[0m] = consultDB(queryValue).map { [36mlistValues[0m =>[0m
-[0m[[0m[33mwarn[0m] [0m[0m[33m[33m   |[0m    ^[0m[0m
-[0m[[0m[33mwarn[0m] [0m[0m[33m   |[0m    Line is indented too far to the left, or a `}` is missing[0m
+[0m[[0m[33mwarn[0m] [0m[0m/home/gustavo/Estudos/soluevo/placedOrders2/src/main/scala/connection/PrivateExecutionContext.scala:8:16: Implicit definition should have explicit type (inferred scala.concurrent.ExecutionContextExecutorService) [quickfixable][0m
+[0m[[0m[33mwarn[0m] [0m[0m  implicit val ec = ExecutionContext.fromExecutorService(executor)[0m
+[0m[[0m[33mwarn[0m] [0m[0m               ^[0m
 [0m[[0m[33mwarn[0m] [0m[0mone warning found[0m
