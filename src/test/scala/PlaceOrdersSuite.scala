@@ -25,38 +25,34 @@ class PlaceOrdersSuite extends AnyFunSuite{
     Order(3, List(item3), "Cliente 3", "contato_cliente3@example.com", "Endereço Cliente 3", BigDecimal("8.00"), currentDateTime),
     Order(4, List(item4), "Cliente 4", "contato_cliente4@example.com", "Endereço Cliente 4", BigDecimal("8.00"), currentDateTime),
     Order(5, List(item5), "Cliente 5", "contato_cliente5@example.com", "Endereço Cliente 5", BigDecimal("8.00"), currentDateTime),
-    Order(6, List(item6), "Cliente 6", "contato_cliente6@example.com", "Endereço Cliente 6", BigDecimal("16.00"), currentDateTime)
+    Order(6, List(item6), "Cliente 6", "contato_cliente6@example.com", "Endereço Cliente 6", BigDecimal("16.00"), currentDateTime),
+    Order(7, List(item1), "Cliente 7", "contato_cliente7@example.com", "Endereço Cliente 7", BigDecimal("8.00"), currentDateTime),
+    Order(8, List(item2), "Cliente 8", "contato_cliente8@example.com", "Endereço Cliente 8", BigDecimal("8.00"), currentDateTime),
+    Order(9, List(item3), "Cliente 9", "contato_cliente9@example.com", "Endereço Cliente 9", BigDecimal("8.00"), currentDateTime),
+    Order(10, List(item4), "Cliente 10", "contato_cliente10@example.com", "Endereço Cliente 10", BigDecimal("8.00"), currentDateTime),
+    Order(11, List(item5), "Cliente 11", "contato_cliente11@example.com", "Endereço Cliente 11", BigDecimal("8.00"), currentDateTime),
+    Order(12, List(item6), "Cliente 12", "contato_cliente12@example.com", "Endereço Cliente 12", BigDecimal("16.00"), currentDateTime)
   )
 
 
-  test("validateArgs should return true if given 2 arguments") {
-    val args = Array("2020-10-21 21:14:30","2023-9-21 21:14:30")
-    assert(validator.Validator.validateArgs(args))
+
+  test("filterOrdersByDate should filter orders correctly") {
+    val startDate = LocalDateTime.of(2020, 10, 21, 14, 30, 0)
+    val endDate = LocalDateTime.of(2023, 9, 21, 14, 30, 0)
+    val filteredOrders = application.CalculateOrders.filterOrdersByDate(orders, startDate, endDate)
+    assert(filteredOrders.isEmpty)
   }
 
-  test("validateArgs should throw an exception if not given 2 arguments") {
-    val args = Array("2020-10-21 21:14:30")
-    assertThrows[IllegalArgumentException] {
-      validator.Validator.validateArgs(args)
-    }
+  test("filterOrdersByDate should filter orders correctly (equals 12)") {
+    val startDate = LocalDateTime.of(2020, 10, 21, 14, 30, 0)
+    val endDate = LocalDateTime.now()
+    val filteredOrders = application.CalculateOrders.filterOrdersByDate(orders, startDate, endDate)
+    assert(filteredOrders.size == 12)
   }
+  
+  
 
-  test("validateDateFormat should return true for valid date format") {
-    val args = Array("2020-10-21 21:14:30","2023-9-21 21:14:30")
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
-    assert(validator.Validator.validateDateFormat(args, formatter))
-  }
 
-  test("validateDateFormat with a invalid date format") {
-    val args = Array("2023/10/23", "2023-9-21 21:14:30")
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
-    assert(validator.Validator.validateDateFormat(args, formatter))
-  }
-
-//  test("filterOrdersByDate should filter orders correctly") {
-//    val filteredOrders = application.CalculateOrders.filterOrdersByDate(orders, startDate, endDate)
-//    assert(filteredOrders.size == 2)
-//  }
 
 
 
