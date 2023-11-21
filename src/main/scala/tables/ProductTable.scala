@@ -23,7 +23,6 @@ object ProductTable{
     def * = (id, name, category, weight, price, date) <> ((Product.apply _).tupled, Product.unapply)
   }
 
-  val productTable = TableQuery[ProductTable]
 
   def getProducts: List[Product] = {
     val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")

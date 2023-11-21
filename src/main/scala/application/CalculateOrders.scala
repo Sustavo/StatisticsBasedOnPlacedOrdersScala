@@ -69,6 +69,7 @@ object CalculateOrders {
       if (input.contains("-")) {
         val parts = input.split("-")
         if (parts.length == 2) {
+          Validator.validateIfAreNumbers(parts(0), parts(1))
           val start = parts(0).trim().toInt
           val end = parts(1).trim().toInt
           Validator.validateIntervalParameters(start, end)

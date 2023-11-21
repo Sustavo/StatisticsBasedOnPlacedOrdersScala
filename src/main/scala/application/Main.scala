@@ -19,7 +19,8 @@ object Main {
   def main(args: Array[String]): Unit = {
     val scanner = new Scanner(System.in)
     val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
-    if (Validator.validateArgs(args) && Validator.validateDateFormat(args, formatter)) return
+    Validator.validateArgs(args)
+    Validator.validateDateFormat(args, formatter)
 
 //    val startDate = LocalDateTime.of(2020, 10, 21, 14, 30, 0)
 //    val endDate = LocalDateTime.of(2023, 9, 21, 14, 30, 0)
