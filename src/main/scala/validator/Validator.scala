@@ -2,13 +2,14 @@ package validator
 
 import java.time.{LocalDate, LocalDateTime}
 import java.time.format.{DateTimeFormatter, DateTimeParseException}
+import scala.util.{Failure, Success, Try}
 
 object Validator {
   def validateArgs(args: Array[String]): Unit = {
     if (args.length != 2)  throw new IllegalArgumentException("you need to enter two dates:\n" + "Start Date and End Date")
   }
 
-  def validateDateFormat(args: Array[String], formatter: DateTimeFormatter): Unit = {
+  def validateDateFormatAndDateRange(args: Array[String], formatter: DateTimeFormatter): Unit = {
     try {
       val start = LocalDate.parse(args(0), formatter)
       val end = LocalDate.parse(args(1), formatter)
@@ -23,25 +24,26 @@ object Validator {
     }
   }
 
-  def validateDateRange(startDate: LocalDateTime, endDate: LocalDateTime): Unit =
-    if(startDate.isAfter(endDate)) throw new IllegalArgumentException("The start date cannot be later than the end date")
+  def validateIntervalParameters(start: Int, end: Int): Boolean = {
+    val interval = (end < start)
+    if (interval) println("The value of 'end' must be greater than 'start'.")
 
-  def validateIntervalParameters(start: Int, end: Int): Unit = {
-    if (end < start) throw new IllegalArgumentException("The value of 'start' must be greater than 'end'.")
+    !interval
   }
 
-  def validateIfAreNumbers(start: String, end: String): Unit = {
-    def checkNumber(value: String): Unit = {
-      try {
-        value.toInt
-      } catch {
-        case _: NumberFormatException =>
-          throw new IllegalArgumentException(s"this input ('$value') is not a number")
+  def validateIfAreNumbers(start: String, end: String): Boolean = {
+    def checkNumber(value: String): Boolean = {
+      if(value.toIntOption.isDefined) {
+        true
+      } else {
+        println(s"Input ('$value') is not a number")
+        false
       }
     }
 
-    checkNumber(start)
-    checkNumber(end)
+    checkNumber(start) && checkNumber(end)
   }
+
+
 
 }

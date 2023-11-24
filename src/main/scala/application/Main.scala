@@ -20,15 +20,10 @@ object Main {
     val scanner = new Scanner(System.in)
     val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
     Validator.validateArgs(args)
-    Validator.validateDateFormat(args, formatter)
-
-//    val startDate = LocalDateTime.of(2020, 10, 21, 14, 30, 0)
-//    val endDate = LocalDateTime.of(2023, 9, 21, 14, 30, 0)
+    Validator.validateDateFormatAndDateRange(args, formatter)
 
     val startDate = LocalDateTime.parse(args(0), formatter)
     val endDate = LocalDateTime.parse(args(1), formatter)
-
-    Validator.validateDateRange(startDate, endDate)
 
     val orders: List[Order] = OrderTable.getOrders
     println("----------------------------------------")

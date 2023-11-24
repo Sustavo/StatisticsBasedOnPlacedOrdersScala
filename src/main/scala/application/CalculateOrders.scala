@@ -69,17 +69,28 @@ object CalculateOrders {
       if (input.contains("-")) {
         val parts = input.split("-")
         if (parts.length == 2) {
-          Validator.validateIfAreNumbers(parts(0), parts(1))
-          val start = parts(0).trim().toInt
-          val end = parts(1).trim().toInt
-          Validator.validateIntervalParameters(start, end)
-          Some(Left(RegularInterval(start, end)))
+          if(Validator.validateIfAreNumbers(parts(0), parts(1))) {
+            val start = parts(0).trim().toInt
+            val end = parts(1).trim().toInt
+            if (Validator.validateIntervalParameters(start, end)) {
+              Some(Left(RegularInterval(start, end)))
+            } else {
+              None
+            }
+          } else {
+            None
+          }
         } else None
       } else if (input.startsWith(">") || input.startsWith("<")) {
         val operator = input.substring(0, 1)
         val value = input.substring(1).trim().toInt
         Some(Right(ComparativeInterval(operator, value)))
-      } else None
+      } else if (!input.contains("-") && !input.contains(">") && !input.contains("<")) {
+        println(s"Input ('$input') is a single number")
+        None
+      } else {
+        None
+      }
   }
 
   private def processIntervals(orders: List[Order], indexesList: ListBuffer[Option[Either[RegularInterval, ComparativeInterval]]]): Unit = {
